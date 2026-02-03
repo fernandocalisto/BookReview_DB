@@ -32,7 +32,20 @@ public class BookDAO_MySQL implements BookDAO {
 
     @Override
     public boolean deleteBook(int id) {
-        return true;
+        String command = "DELETE FROM livros WHERE id = ?;";
+        try (Connection c = ConnectionFactory.getConnection();
+             PreparedStatement stmt = c.prepareStatement(command)){
+
+            stmt.setInt(1, id);
+
+            int rowsAffected = stmt.executeUpdate();
+
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao Deletar livro: " + e.getMessage());
+            return false;
+        }
     }
 
     @Override
