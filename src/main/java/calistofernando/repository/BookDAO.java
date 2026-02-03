@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface BookDAO {
 
-    void addBook (Book book);
-    void deleteBook (int id);
+    boolean addBook (Book book);
+    boolean deleteBook (int id);
     Book getBook (int id);
     List<Book> getAllBooks ();
 
