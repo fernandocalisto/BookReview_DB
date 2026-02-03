@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BookDAO_MySQL implements BookDAO {
@@ -73,6 +74,24 @@ public class BookDAO_MySQL implements BookDAO {
 
     @Override
     public List<Book> getAllBooks() {
-        return List.of();
+
+        String command = "SELECT id, titulo, autor FROM livros";
+        List<Book> ans = new ArrayList<>();
+
+        try (Connection c = ConnectionFactory.getConnection();
+             PreparedStatement stmt =  c.prepareStatement(command);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+
+                Book b = new Book(rs.getInt("id"), rs.getString("titulo"), rs.getString("autor"));
+                ans.add(b);
+
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao Acessar lista de Livros: " + e.getMessage());
+        }
+        return ans;
     }
 }
