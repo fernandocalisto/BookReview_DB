@@ -122,6 +122,37 @@ public class ReviewDAO_MySQL implements ReviewDAO {
 
     @Override
     public List<Review> getReviewsByUser(String username) {
-        return List.of();
+
+        String command = "SELECT * FROM reviews WHERE nome_usuario = ?";
+        List<Review> ans = new ArrayList<>();
+
+        try (Connection c = ConnectionFactory.getConnection();
+             PreparedStatement stmt = c.prepareStatement(command)){
+
+            stmt.setString(1, username);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+
+                while (rs.next()) {
+
+                    Review r = new Review(rs.getInt("id"),
+                            rs.getInt("livro_id"),
+                            rs.getString("nome_usuario"),
+                            rs.getInt("estrelas"),
+                            rs.getString("comentario"));
+
+                    ans.add(r);
+
+                }
+
+                return ans;
+
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar Reviews de Usuário: " + e.getMessage());
+            return List.of();
+        }
+
     }
 }
