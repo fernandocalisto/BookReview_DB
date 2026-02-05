@@ -35,7 +35,22 @@ public class ReviewDAO_MySQL implements ReviewDAO{
 
     @Override
     public boolean deleteReview(int id) {
-        return false;
+
+        String command = "DELETE FROM reviews WHERE id = ?";
+
+        try (Connection c = ConnectionFactory.getConnection();
+             PreparedStatement stmt = c.prepareStatement(command)){
+
+            stmt.setInt(1, id);
+            int rowsAffected = stmt.executeUpdate();
+
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao deletar a Review: " + e.getMessage());
+            return false;
+        }
+
     }
 
     @Override
