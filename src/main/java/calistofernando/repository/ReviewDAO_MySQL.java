@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReviewDAO_MySQL implements ReviewDAO {
@@ -88,7 +89,35 @@ public class ReviewDAO_MySQL implements ReviewDAO {
 
     @Override
     public List<Review> getReviewsByBook(int bookId) {
-        return List.of();
+
+        String command = "SELECT * FROM reviews WHERE livro_id = ?";
+        List<Review> ans = new ArrayList<>();
+
+        try (Connection c = ConnectionFactory.getConnection();
+             PreparedStatement stmt = c.prepareStatement(command)) {
+
+            stmt.setInt(1, bookId);
+
+            try (ResultSet rs = stmt.executeQuery()){
+
+                while (rs.next()) {
+                    Review r = new Review(rs.getInt("id"),
+                            rs.getInt("livro_id"),
+                            rs.getString("nome_usuario"),
+                            rs.getInt("estrelas"),
+                            rs.getString("comentario"));
+
+                    ans.add(r);
+                }
+
+                return ans;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao consultar as Reviews do livro: " + e.getMessage());
+            return List.of();
+        }
+
     }
 
     @Override
