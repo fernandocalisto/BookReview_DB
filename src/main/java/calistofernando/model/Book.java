@@ -20,6 +20,14 @@ public class Book {
     public Book() {
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -34,5 +42,9 @@ public class Book {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public String toString() {
+        return String.format("ID: %-4d | Titulo: %-20s | Autor: %-15s", id, title, author);
     }
 }

@@ -4,6 +4,8 @@ import calistofernando.model.Book;
 import calistofernando.repository.BookDAO_MySQL;
 import calistofernando.repository.ReviewDAO_MySQL;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class App {
@@ -85,6 +87,24 @@ public class App {
     }
 
     private void listAllBooks() {
+        List<Book> bookList = bookDAO.getAllBooks();
+
+        System.out.println("\n===========================================================");
+        System.out.println("                      Book List                      ");
+        System.out.println("===========================================================");
+        System.out.printf("%-5s | %-25s | %-20s\n", "ID", "TÍTULO", "AUTOR");
+        System.out.println("-----------------------------------------------------------");
+        if (bookList.isEmpty()) {
+            System.out.println("          No books currently available.          ");
+        } else {
+            for (Book b : bookList) {
+                System.out.printf("%-5d | %-25s | %-20s\n",
+                        b.getId(),
+                        b.getTitle(),
+                        b.getAuthor());
+            }
+        }
+        System.out.println("===========================================================\n");
     }
 
     private void showBookDetails() {
