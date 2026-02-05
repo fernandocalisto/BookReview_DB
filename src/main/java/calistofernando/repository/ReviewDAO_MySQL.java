@@ -5,10 +5,11 @@ import calistofernando.model.Review;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class ReviewDAO_MySQL implements ReviewDAO{
+public class ReviewDAO_MySQL implements ReviewDAO {
 
     @Override
     public boolean addReview(Review review) {
@@ -16,7 +17,7 @@ public class ReviewDAO_MySQL implements ReviewDAO{
         String command = "INSERT INTO reviews (livro_id, nome_usuario, estrelas, comentario) VALUES (?,?,?,?)";
 
         try (Connection c = ConnectionFactory.getConnection();
-             PreparedStatement stmt = c.prepareStatement(command)){
+             PreparedStatement stmt = c.prepareStatement(command)) {
 
             stmt.setInt(1, review.getBookID());
             stmt.setString(2, review.getUsername());
@@ -39,7 +40,7 @@ public class ReviewDAO_MySQL implements ReviewDAO{
         String command = "DELETE FROM reviews WHERE id = ?";
 
         try (Connection c = ConnectionFactory.getConnection();
-             PreparedStatement stmt = c.prepareStatement(command)){
+             PreparedStatement stmt = c.prepareStatement(command)) {
 
             stmt.setInt(1, id);
             int rowsAffected = stmt.executeUpdate();
@@ -50,12 +51,39 @@ public class ReviewDAO_MySQL implements ReviewDAO{
             System.err.println("Erro ao deletar a Review: " + e.getMessage());
             return false;
         }
-
     }
 
     @Override
     public Review getReview(int id) {
-        return null;
+
+        String command = "SELECT * FROM reviews WHERE id = ?";
+
+        try (Connection c = ConnectionFactory.getConnection();
+             PreparedStatement stmt = c.prepareStatement(command)) {
+
+            stmt.setInt(1, id);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+
+                if (rs.next()) {
+                    Review ans = new Review(rs.getInt("id"),
+                            rs.getInt("livro_id"),
+                            rs.getString("nome_usuario"),
+                            rs.getInt("estrelas"),
+                            rs.getString("comentario"));
+
+                    return ans;
+
+                }
+
+                return null;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao consultar review: " + e.getMessage());
+            return null;
+        }
+
     }
 
     @Override
