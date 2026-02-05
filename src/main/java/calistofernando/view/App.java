@@ -67,6 +67,21 @@ public class App {
     }
 
     private void registerBook() {
+
+        scanner.nextLine();
+        Book b = new Book();
+        System.out.println("Enter the book title: ");
+        b.setTitle(scanner.nextLine());
+
+        System.out.println("Enter the author: ");
+        b.setAuthor(scanner.nextLine());
+
+        if (bookDAO.addBook(b)) {
+            System.out.println("Success: Book registered!");
+        } else {
+            System.out.println("Error: Could not register book.");
+        }
+
     }
 
     private void listAllBooks() {
