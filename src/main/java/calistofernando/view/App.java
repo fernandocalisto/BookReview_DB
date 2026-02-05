@@ -1,5 +1,6 @@
 package calistofernando.view;
 
+import calistofernando.model.Book;
 import calistofernando.repository.BookDAO_MySQL;
 import calistofernando.repository.ReviewDAO_MySQL;
 
@@ -23,7 +24,13 @@ public class App {
         int option = -1;
         while (option !=0) {
             showMenu();
-            option = scanner.nextInt();
+            if (scanner.hasNextInt()) {
+                option = scanner.nextInt();
+                handleOption(option);
+            } else {
+                System.out.println("Please, enter a number!");
+                scanner.next();
+            }
         }
     }
 
@@ -43,6 +50,41 @@ public class App {
         System.out.println(" [0] EXIT");
         System.out.println("=======================================");
         System.out.print("Choose an option: ");
+    }
+
+    private void handleOption(int option) {
+        switch (option) {
+            case 1 -> registerBook();
+            case 2 -> listAllBooks();
+            case 3 -> showBookDetails();
+            case 4 -> deletingBook();
+            case 5 -> addingReview();
+            case 6 -> deletingReview();
+            case 7 -> showUserReviews();
+            case 0 -> System.out.println("Closing system... Goodbye!");
+            default -> System.out.println("Invalid option! Try again.");
+        }
+    }
+
+    private void registerBook() {
+    }
+
+    private void listAllBooks() {
+    }
+
+    private void showBookDetails() {
+    }
+
+    private void deletingBook() {
+    }
+
+    private void addingReview() {
+    }
+
+    private void deletingReview() {
+    }
+
+    private void showUserReviews() {
     }
 
 }
