@@ -62,7 +62,7 @@ public class BookDAO_MySQL implements BookDAO {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return new Book(rs.getString("titulo"), rs.getString("autor"));
+                    return new Book(rs.getInt("id"), rs.getString("titulo"), rs.getString("autor"));
                 }
             }
 

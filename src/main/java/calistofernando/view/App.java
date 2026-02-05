@@ -1,6 +1,7 @@
 package calistofernando.view;
 
 import calistofernando.model.Book;
+import calistofernando.model.Review;
 import calistofernando.repository.BookDAO_MySQL;
 import calistofernando.repository.ReviewDAO_MySQL;
 
@@ -108,6 +109,41 @@ public class App {
     }
 
     private void showBookDetails() {
+        System.out.print("\nEnter the book ID to see details: ");
+
+        if (scanner.hasNextInt()) {
+            int id = scanner.nextInt();
+            scanner.nextLine();
+
+            Book b = bookDAO.getBook(id);
+
+            if (b != null) {
+                System.out.println("\n=======================================");
+                System.out.println("            BOOK DETAILS               ");
+                System.out.println("=======================================");
+                System.out.println("Title:  " + b.getTitle());
+                System.out.println("Author: " + b.getAuthor());
+                System.out.println("---------------------------------------");
+
+                List<Review> reviews = reviewDAO.getReviewsByBook(id);
+
+                System.out.println("REVIEWS:");
+                if (reviews.isEmpty()) {
+                    System.out.println("  No reviews yet for this book.");
+                } else {
+                    for (Review r : reviews) {
+                        System.out.printf("  [%d stars] %s: \"%s\"\n",
+                                r.getStars(), r.getUsername(), r.getComment());
+                    }
+                }
+                System.out.println("=======================================");
+            } else {
+                System.out.println("\n>>> Error: Book with ID " + id + " not found.");
+            }
+        } else {
+            System.out.println("\n>>> Error: Please enter a numeric ID.");
+            scanner.nextLine();
+        }
     }
 
     private void deletingBook() {
