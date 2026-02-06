@@ -147,6 +147,28 @@ public class App {
     }
 
     private void deletingBook() {
+        System.out.print("\nEnter the ID of the book you want to delete: ");
+
+        if (scanner.hasNextInt()) {
+            int id = scanner.nextInt();
+            scanner.nextLine();
+
+            System.out.print("Are you sure you want to delete book #" + id + "? (Y/N): ");
+            String confirm = scanner.nextLine().trim().toUpperCase();
+
+            if (confirm.equals("Y")) {
+                if (bookDAO.deleteBook(id)) {
+                    System.out.println(">>> Book successfully deleted!");
+                } else {
+                    System.out.println(">>> Error: Could not delete. Check if the ID exists or if there are linked reviews.");
+                }
+            } else {
+                System.out.println(">>> Operation canceled.");
+            }
+        } else {
+            System.out.println(">>> Error: Please enter a numeric ID.");
+            scanner.nextLine();
+        }
     }
 
     private void addingReview() {
