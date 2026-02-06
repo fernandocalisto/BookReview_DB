@@ -172,6 +172,45 @@ public class App {
     }
 
     private void addingReview() {
+        scanner.nextLine();
+        int bookId = -1;
+        while (true) {
+            System.out.print("Enter the ID of the book you wish to review: ");
+            if (scanner.hasNextInt()) {
+                bookId = scanner.nextInt();
+                scanner.nextLine();
+                if (bookDAO.getBook(bookId) != null) break;
+                System.out.println(">>> Error: Book ID not found.");
+            } else {
+                System.out.println(">>> Error: Please enter a numeric ID.");
+                scanner.nextLine();
+            }
+        }
+        String username = "";
+        while (username.isBlank()) {
+            System.out.print("Your name: ");
+            username = scanner.nextLine().trim();
+        }
+        int stars = -1;
+        while (stars < 1 || stars > 5) {
+            System.out.print("Stars (1-5): ");
+            if (scanner.hasNextInt()) {
+                stars = scanner.nextInt();
+                scanner.nextLine();
+                if (stars < 1 || stars > 5) System.out.println(">>> Use a scale of 1 to 5.");
+            } else {
+                System.out.println(">>> Please enter a number.");
+                scanner.nextLine();
+            }
+        }
+        System.out.print("Your comment: ");
+        String comment = scanner.nextLine();
+        Review newReview = new Review(comment, stars, username, bookId);
+        if (reviewDAO.addReview(newReview)) {
+            System.out.println("\n>>> Review added successfully!");
+        } else {
+            System.out.println("\n>>> Failed to save review.");
+        }
     }
 
     private void deletingReview() {

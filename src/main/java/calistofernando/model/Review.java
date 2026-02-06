@@ -16,6 +16,13 @@ public class Review {
         this.comment = comment;
     }
 
+    public Review(String comment, int stars, String username, int bookID) {
+        this.comment = comment;
+        this.stars = stars;
+        this.username = username;
+        this.bookID = bookID;
+    }
+
     public Review() {
     }
 
