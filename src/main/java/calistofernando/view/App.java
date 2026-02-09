@@ -238,6 +238,28 @@ public class App {
     }
 
     private void showUserReviews() {
+        scanner.nextLine();
+        System.out.print("\nEnter the username to see their reviews: ");
+        String username = scanner.nextLine().trim();
+
+        List<Review> ans = reviewDAO.getReviewsByUser(username);
+
+        if (ans.isEmpty()) {
+            System.out.println("\n>>> No reviews found for user: " + username);
+            return;
+        }
+
+        System.out.println("\nShowing " + ans.size() + " review(s) from: " + username);
+        for (Review r : ans) {
+            System.out.println("""
+            ////////////////////////////////////////////////////////////////////
+            Review ID: %d
+            Book ID:   %d
+            Stars:     %d/5
+            Comment:   %s
+            ////////////////////////////////////////////////////////////////////"""
+                    .formatted(r.getId(), r.getBookID(), r.getStars(), r.getComment()));
+        }
     }
 
 }
