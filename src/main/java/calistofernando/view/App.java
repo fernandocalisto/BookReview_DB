@@ -5,6 +5,7 @@ import calistofernando.model.Review;
 import calistofernando.repository.BookDAO_MySQL;
 import calistofernando.repository.ReviewDAO_MySQL;
 
+import javax.print.DocFlavor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -214,6 +215,26 @@ public class App {
     }
 
     private void deletingReview() {
+        scanner.nextLine();
+        System.out.println("Insert the ID of the review you want to delete: ");
+        if (scanner.hasNextInt()) {
+            int id = scanner.nextInt();
+            scanner.nextLine();
+            System.out.println("Are you sure you want to delete this review? (Y/N): ");
+            String confirm = scanner.nextLine().trim().toUpperCase();
+            if (confirm.equals("Y")) {
+                if (reviewDAO.deleteReview(id)) {
+                    System.out.println("Review successfully deleted!");
+                } else {
+                    System.out.println("Failed to delete review");
+                }
+            } else {
+                System.out.println("Operation Aborted.");
+            }
+        } else {
+            System.out.println("Operation Aborted. Enter a valid numeric ID.");
+            scanner.nextLine();
+        }
     }
 
     private void showUserReviews() {
